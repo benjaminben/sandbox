@@ -20,9 +20,9 @@ function Player(username) {
   this.username = username
 }
 
-var ben = new Player("beners");
-var drake = new Player("champagnepapi");
-var radha = new Player("radha.v");
+// var ben = new Player("beners");
+// var drake = new Player("champagnepapi");
+// var radha = new Player("radha.v");
 
 function getProfPic(player, index) {
   return Promise.resolve( $.ajax({
@@ -34,7 +34,7 @@ function getProfPic(player, index) {
   }) ).then(
     function(data) {
       player.id = data.data[0].id;
-      $('#p'+index+'Col').append('<div id="p'+index+'Data" class="pData"><img src="'+data.data[0].profile_picture+'" /></div>')
+      $('#p'+index+'Col').append('<div id="p'+index+'Data" class="pData"><img class="profPic" src="'+data.data[0].profile_picture+'" /></div>')
     }
   ).catch(
     function(err) {
@@ -177,15 +177,6 @@ function switchLikes() {
   })
 }
 
-// function switch(players) {
-//   return Promise.each(arguments, (function(player,i) {
-//     var p0Col = $('#p0Col');
-//     var p1Col = $('#p1Col');
-
-//     $('#p'+i+'Col img.absolute').remove
-//   }
-// }
-
 function firstBabies(babies) {
   clearBoth();
   return Promise.each(arguments, (function(baby, i) {
@@ -195,4 +186,46 @@ function firstBabies(babies) {
       + '<div>Likes: '+baby.instas[baby.instas.length - 1].likes+'</div>'
       + '<div>Filter: '+baby.instas[baby.instas.length - 1].filter+'</div>');
   }))
+}
+
+var spitFacts = {
+  ratio: "the average follow:follower ratio is 1:1.17",
+  likes: function() {
+    return(texts())
+    function texts() {
+      console.log('"LOVE" is the 14th most popular IG hashtag');
+      setTimeout(function(){
+       console.log('every 10 seconds, more than 100 "#love" photos are posted');
+       setTimeout(makeLove(),10000)
+      }, 10000);
+      setTimeout(function(){
+        console.log('the highest liked hashtag on IG: #like4like');
+      }, 5000)
+    }
+  },
+  fool: "LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOL"
+}
+
+function makeLove() {
+  $.ajax({
+    method: "GET",
+    url: "https://api.instagram.com/v1/tags/love/media/recent?access_token=1578228172.467ede5.04a6ec58145743cc851a2d64b58d9627",
+    dataType: "jsonp",
+    jsonp: "callback",
+    jsonpCallback: "jsonpcallback",
+    success: function(data) {
+      $("body").append('<div id="loveBox" style="width:100%;height:100%;position:absolute;"></div>')
+      data.data.forEach(function(data) {
+        imgUrl = data.images.standard_resolution.url;
+        $("<div class='imgBox'><img src=" + imgUrl + "></div>").hide().appendTo('#loveBox').fadeIn(1000);
+      })
+    },
+    error: function(err) {
+      console.log(err)
+    }
+  })
+}
+
+function noLove() {
+  $('#loveBox').remove()
 }

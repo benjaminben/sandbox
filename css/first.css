@@ -56,3 +56,23 @@ body {
 img.absolute {
   z-index:10000;
 }
+
+#loveBox {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  top:0;
+  left:0;
+}
+
+.imgBox {
+  width: 20vw;
+  height: 20vw;
+}
+.imgBox img {
+  width: 100%;
+}
+
+.profPic {
+  width:100%;
+}
