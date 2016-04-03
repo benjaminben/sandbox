@@ -6,17 +6,45 @@ function makeSpace(){
   return "IN SPACE."
 }
 
-function enterPlayers(p1, p2){
-  return new Promise( function(resolve) {
-    var p1Col = '<div id="p0Col" class="pCol"><h2>' + p1.username + '</h2></div>';
-    var p2Col = '<div id="p1Col" class="pCol"><h2>' + p2.username + '</h2></div>';
-    var pCols = p1Col + p2Col;
-    $('#space').append(pCols);
-    resolve(getProfPics(p1,p2));
-  })
+function enterPlayers() {
+
 }
 
-function Player(username) {
+function enterGrams(players){
+
+  var grams = [];
+
+  var playerCols = []
+  return Promise.each(arguments, function(player, i) {
+    var playerCol = '<div id="'+player.username+'" class="pCol"><h2>' + player.username + '</h2></div>';
+    playerCols.push(playerCol);
+    grams.push(player);
+    return playerCols;
+  }).then(function(cols) {
+
+        console.log(grams)
+        pCols = playerCols.join('');
+        console.log(pCols)
+        var block = '<div id="gramBox" class="flex">' + pCols + '</div>';
+        console.log(block);
+        $('body').append(block);
+    }).then(
+    function() {
+      getProfPics.apply(this, grams);
+    }
+  );
+
+  // return new Promise( function(resolve) {
+  //   var playerCol = '<div id="'+player+'" class="pCol"><h2>' + p1.username + '</h2></div>';
+  //   var p2Col = '<div id="p1Col" class="pCol"><h2>' + p2.username + '</h2></div>';
+  //   var pCols = p1Col + p2Col;
+  //   var block = '<div id="gramBox" class="flex">' + pCols + '</div>';
+  //   $('body').append(block);
+  //   resolve(getProfPics(p1,p2));
+  // })
+}
+
+function Gram(username) {
   this.username = username
 }
 
@@ -34,17 +62,22 @@ function getProfPic(player, index) {
   }) ).then(
     function(data) {
       player.id = data.data[0].id;
-      $('#p'+index+'Col').append('<div id="p'+index+'Data" class="pData"><img class="profPic" src="'+data.data[0].profile_picture+'" /></div>')
+      console.log(data.data[0].profile_picture)
+      console.log("appending to", $('#'+player.username))
+      $('#'+player.username).append('<div id="'+player.username+'Data" class="pData"><img class="profPic" src="'+data.data[0].profile_picture+'" /></div>')
+      console.log("just appended pic of ", player.username)
     }
   ).catch(
     function(err) {
-      console.log(err)
+      console.log(err);
+      // throw err
     }
   )
 }
 
 function getProfPics(players) {
   return Promise.each(arguments, function(player, i){
+    // console.log(player)
     return getProfPic(player, i)
   })
 
@@ -82,7 +115,7 @@ function getInstas(names) {
 
 function getMedia(player, index, maxPages, url) {
 
-  url = url || "https://api.instagram.com/v1/users/"+player.id+"/media/recent?access_token=1578228172.467ede5.04a6ec58145743cc851a2d64b58d9627";
+  url = url || "https://api.instagram.com/v1/users/"+player.id+"/media/recent?access_token=1578228172.467ede5.04a6ec58145743cc851a2d64b58d9627&count=40";
 
   return Promise.resolve( $.ajax({
     method: "GET",
@@ -143,14 +176,22 @@ function getMedias(players) {
   })
 }
 
-function clear(index) {
-  $('#p'+index+'Data').html('')
+function clearGramData(gram) {
+  $(gram.username+'Data').remove()
 }
 
-function clearBoth() {
-  clear(0);
-  clear(1);
+function clearAllGramData() {
+  $('.pData').remove()
 }
+
+function clearPlayer(name) {
+  $('#'+name).remove()
+}
+
+function clearAllPlayers() {
+  $('.pCol').remove()
+}
+
 
 function displayLikes(players) {
   return Promise.each(arguments, (function(player, i) {
@@ -177,6 +218,8 @@ function switchLikes() {
   })
 }
 
+// IS THIS PROMISE NECESSARY??
+
 function firstBabies(babies) {
   clearBoth();
   return Promise.each(arguments, (function(baby, i) {
@@ -189,8 +232,8 @@ function firstBabies(babies) {
 }
 
 var spitFacts = {
-  ratio: "the average follow:follower ratio is 1:1.17",
-  likes: function() {
+  gramRatio: "the average follow:follower ratio is 1:1.17",
+  instaLikes: function() {
     return(texts())
     function texts() {
       console.log('"LOVE" is the 14th most popular IG hashtag');
@@ -228,4 +271,19 @@ function makeLove() {
 
 function noLove() {
   $('#loveBox').remove()
+}
+
+function blackHole() {
+  $('body').html('')
+}
+
+
+function getPic(player, i) {
+  return Promise.each(arguments, (function(baby, i) {
+    $('#p'+i+'Data').append(
+      '<img src="'+baby.instas[baby.instas.length - 1].url+'" />'
+      + '<div>'+baby.instas[baby.instas.length - 1].caption+'</div>'
+      + '<div>Likes: '+baby.instas[baby.instas.length - 1].likes+'</div>'
+      + '<div>Filter: '+baby.instas[baby.instas.length - 1].filter+'</div>');
+  }))
 }

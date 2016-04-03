@@ -16,6 +16,15 @@ body {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#gramBox {
+  margin: 0 auto;
+  justify-content: space-around;
+  text-shadow: 1px 1px 1px #000;
 }
 
 .pCol {
@@ -47,7 +56,7 @@ body {
 }
 
 .emoji {
-  font-size: 5em;
+  font-size: 3em;
 }
 
 .absolute {
@@ -55,6 +64,10 @@ body {
 }
 img.absolute {
   z-index:10000;
+}
+
+.flex {
+  display: flex;
 }
 
 #loveBox {
