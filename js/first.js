@@ -94,7 +94,7 @@ function getInsta(player, index) {
       var followedBy = data.data.counts.followed_by;
       var follows = data.data.counts.follows;
       var ratio = (followedBy / follows).toFixed(4);
-      $('#p'+index+'Data').append(
+      $('#'+player.username+'Data').append(
         '<div>followed by: '+followedBy+'</div>'
         + '<div>follows: '+follows+'</div>'
         + '<h1>RATIO: '+ratio+'</h1>'
