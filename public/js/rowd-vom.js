@@ -39,7 +39,6 @@ var vom_init = function(){
   })
 
   socket.on('ship_vom', function(char){
-    console.log(char)
     textarea.innerHTML += char;
   })
 }

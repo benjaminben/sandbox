@@ -54,7 +54,6 @@ io.on('connection', function(socket){
   })
 
   socket.on('spread_vom', function(){
-    console.log('boobs')
     var vom_strings = io.vom_clients.map(function(client){
       return client.vom_string;
     })
