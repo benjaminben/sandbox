@@ -1,6 +1,7 @@
 var flippie = 'Hello World My Name Is Ben Last Night There Was Fire Tommorrow Quakes With A Chance Of Rain Names Become Grain Pain Becomes Lame',
-    cont  = document.getElementById('cont');
-(function flip_it(){
+    cont  = document.getElementById('flip_it_cont');
+function flip_it(){
+  if( !cont ){ console.log('need target div with id "flip_it_cont"'); return; }
   var arr = flippie.split(' ');
   for( var i = 0; i < arr.length; i++ ){
     if(arr[i].flipped){ return; }
@@ -15,4 +16,4 @@ var flippie = 'Hello World My Name Is Ben Last Night There Was Fire Tommorrow Qu
   cont.innerHTML = arr.join(' ');
   piece = cont.innerHTML;
   flippie.flipIt = setTimeout(flip_it, 10000);
-})();
+};
