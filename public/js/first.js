@@ -5,6 +5,9 @@ function makeSpace(){
   document.body.appendChild(space);
   return "IN SPACE."
 }
+function destroySpace(){
+  $('#space').remove();
+}
 
 function enterPlayers() {
 
